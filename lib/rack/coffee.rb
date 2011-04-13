@@ -24,14 +24,23 @@ module Rack
     end
     
     def define_command(opts={})
-      @command = ['coffee', '-o', opts[:output_path]]
+      if @cache
+        @command = ['coffee', '-o', opts[:output_path]] 
+      else
+        @command = ['coffee', '-p']      
+      end
+      
       @command.push('--bare') if opts[:nowrap] || opts[:bare]
       @command = @command.join(' ')
     end
     
     def brew(coffee)
-      out = IO.popen("#{@command} #{coffee}")
-      out.readlines
+      if @cache
+        out = IO.popen("#{@command} #{coffee}")
+        out.readlines
+      else
+        IO.popen("#{@command} #{coffee}")
+      end
     end
     
     def read_file(path)
@@ -72,11 +81,15 @@ module Rack
         output_path = bare ? F.join(".", @output_path, @class_urls) : F.join(".", @output_path, @urls)
         define_command :bare => bare, :output_path => output_path
         
-        brew(coffee)
+        if @cache
+          brew(coffee)
 
-        out = read_file F.join(output_path, path.match(/[^\/]+$/)[0])
+          out = read_file F.join(output_path, path.match(/[^\/]+$/)[0])
         
-        [200, headers, out]
+          [200, headers, out]
+        else
+          [200, headers, brew(coffee)]
+        end
       else
         @server.call(env)
       end
