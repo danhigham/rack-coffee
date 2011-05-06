@@ -60,14 +60,14 @@ module Rack
       
       if F.file?(coffee)
           
-        modified_time = F.mtime(coffee)
-
-        if env['HTTP_IF_MODIFIED_SINCE']
-          cached_time = Time.parse(env['HTTP_IF_MODIFIED_SINCE'])
-          if modified_time <= cached_time
-            return [304, {}, 'Not modified']
-          end
-        end
+        # modified_time = F.mtime(coffee)
+        # 
+        # if env['HTTP_IF_MODIFIED_SINCE']
+        #   cached_time = Time.parse(env['HTTP_IF_MODIFIED_SINCE'])
+        #   if modified_time <= cached_time
+        #     return [304, {}, 'Not modified']
+        #   end
+        # end
 
         headers = {"Content-Type" => "application/javascript", "Last-Modified" => F.mtime(coffee).httpdate}
         
