@@ -71,10 +71,10 @@ module Rack
 
         headers = {"Content-Type" => "application/javascript", "Last-Modified" => F.mtime(coffee).httpdate}
         
-        if @cache
-          headers['Cache-Control'] = "max-age=#{@ttl}"
-          headers['Cache-Control'] << ', public' if @cache == :public
-        end
+        # if @cache
+        #   headers['Cache-Control'] = "max-age=#{@ttl}"
+        #   headers['Cache-Control'] << ', public' if @cache == :public
+        # end
         
         bare = !coffee.match(Regexp.new("^#{@root}#{@class_urls}")).nil?
         
