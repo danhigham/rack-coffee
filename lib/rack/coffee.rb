@@ -82,7 +82,7 @@ module Rack
         define_command :bare => bare, :output_path => output_path
         
         if @cache
-          F.delete  F.join(output_path, path.match(/[^\/]+$/)[0])
+          F.delete F.join(output_path, path.match(/[^\/]+$/)[0])
           
           brew(coffee)
 
