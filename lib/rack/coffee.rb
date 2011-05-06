@@ -82,11 +82,12 @@ module Rack
         define_command :bare => bare, :output_path => output_path
         
         if @cache
-          F.delete F.join(output_path, path.match(/[^\/]+$/)[0])
+          js_file = F.join(output_path, path.match(/[^\/]+$/)[0])
+          F.delete js_file if F.file? js_file
           
           brew(coffee)
 
-          out = read_file F.join(output_path, path.match(/[^\/]+$/)[0])
+          out = read_file js_file
         
           [200, headers, out]
         else
