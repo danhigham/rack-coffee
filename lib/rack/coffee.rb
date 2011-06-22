@@ -78,12 +78,11 @@ module Rack
         
         bare = !coffee.match(Regexp.new("^#{@root}#{@class_urls}")).nil?
         
-        output_path = bare ? F.join(".", @output_path, @class_urls) : F.join(".", @output_path, @urls)
+        output_path = bare ? F.join(@root, @output_path, @class_urls) : F.join(@root, @output_path, @urls)
         define_command :bare => bare, :output_path => output_path
         
         if @cache
           js_file = F.join(output_path, path.match(/[^\/]+$/)[0])
-          puts "Caching @ #{js_file}"
           F.delete js_file if F.file? js_file
           
           brew(coffee)
