@@ -83,6 +83,7 @@ module Rack
         
         if @cache
           js_file = F.join(output_path, path.match(/[^\/]+$/)[0])
+          puts "Caching @ #{js_file}"
           F.delete js_file if F.file? js_file
           
           brew(coffee)
