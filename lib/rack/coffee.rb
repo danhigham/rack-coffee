@@ -37,7 +37,9 @@ module Rack
     def brew(coffee)
       if @cache
         out = IO.popen("#{@command} #{coffee}")
-        out.readlines
+        s = out.readlines
+        out.close
+        s
       else
         IO.popen("#{@command} #{coffee}")
       end
