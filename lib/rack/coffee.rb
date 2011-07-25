@@ -89,9 +89,9 @@ module Rack
 
           out = read_file js_file
         
-          [200, headers, out]
+          [200, headers, [out]]
         else
-          [200, headers, brew(coffee)]
+          [200, headers, [brew(coffee)]]
         end
       else
         @server.call(env)
