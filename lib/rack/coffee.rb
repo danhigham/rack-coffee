@@ -37,7 +37,9 @@ module Rack
     def brew(coffee)
       if @cache
         out = IO.popen("#{@command} #{coffee}")
-        out.readlines
+        s = out.readlines
+        out.close
+        s
       else
         IO.popen("#{@command} #{coffee}")
       end
@@ -78,7 +80,7 @@ module Rack
         
         bare = !coffee.match(Regexp.new("^#{@root}#{@class_urls}")).nil?
         
-        output_path = bare ? F.join(".", @output_path, @class_urls) : F.join(".", @output_path, @urls)
+        output_path = bare ? F.join(@root, @output_path, @class_urls) : F.join(@root, @output_path, @urls)
         define_command :bare => bare, :output_path => output_path
         
         if @cache
